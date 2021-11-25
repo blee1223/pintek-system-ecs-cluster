@@ -1,0 +1,7 @@
+version: 0.1.0_alpha
+infrastructure_engineer_role_name: acf-infrastructure-engineer
+network_engineer_role_name: acf-network-engineer
+enterprise_architect: acf-enterprise-architect
+
+service_name: siem
+vpc_key: management
