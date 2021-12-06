@@ -1,18 +1,18 @@
 
 module "constants" {
-  source = "git@github.com:HHS/acf-ngsc-modules.git//constants?ref=v0.1.0"
+  source = "git@github.com:blee1223/acf-ngsc-modules.git//constants"
 }
 
 module "tag_keys" {
-  source = "git@github.com:HHS/acf-ngsc-modules.git//constants/tag_key?ref=v0.1.0"
+  source = "git@github.com:blee1223/acf-ngsc-modules.git//constants/tag_key"
 }
 
 module "tag_values" {
-  source = "git@github.com:HHS/acf-ngsc-modules.git//constants/tag_value?ref=v0.1.0"
+  source = "git@github.com:blee1223/acf-ngsc-modules.git//constants/tag_value"
 }
 
 module "settings" {
-  source = "git@github.com:HHS/acf-ngsc-modules.git//workspace_settings?ref=v0.1.0"
+  source = "git@github.com:blee1223/acf-ngsc-modules.git//workspace_settings"
 
   default_contents = file("${path.module}/default_config.yaml")
   workspace_contents = file("${path.module}/workspaces/${terraform.workspace}.yaml")
@@ -28,7 +28,7 @@ data "template_file" "user_data" {
 }
 
 module "security_groups" {
-  source = "git@github.com:HHS/acf-ngsc-network-modules.git//vpc/security_group?ref=v0.0.4"
+  source = "git@github.com:blee1223/acf-ngsc-network-modules.git//vpc/security_group"
 
   for_each = { for config in module.settings.self.security_groups_config : config.name => config }
 
@@ -37,14 +37,14 @@ module "security_groups" {
   rules     = each.value.rules
   vpc_id    = data.aws_vpc.self.id
 
-  context = module.version_label.context
+  context = module.project_version_label.context
   tags = {
     (module.tag_keys.GENERAL.BUSINESS_SERVICE_COMPONENT) = module.tag_values.BUSINESS_SERVICE_COMPONENTS.SECURITY_GROUP
   }
 }
 
 module "iam_role" {
-  source = "git@github.com:HHS/acf-ngsc-modules.git//iam_role?ref=v0.1.0"
+  source = "git@github.com:blee1223/acf-ngsc-modules.git//iam_role"
 
   providers = {
     aws = aws.enterprise_architect
@@ -55,7 +55,7 @@ module "iam_role" {
   managed_policy_arns      = module.settings.self.role_config.policy_config.managed_policy_arns
   inline_policies          = module.settings.self.role_config.policy_config.inline_policies
 
-  tags = module.version_label.tags
+  tags = module.project_version_label.tags
 }
 
 resource "aws_iam_instance_profile" "ecs_instance" {
@@ -88,7 +88,7 @@ resource "aws_alb_target_group" "cluster_tg" {
 }
 
 module "ecs_cluster" {
-  source = "git@github.com:HHS/acf-ngsc-system-modules.git//autoscaling/ec2?ref=v0.0.2"
+  source = "git@github.com:blee1223/acf-ngsc-system-modules.git//autoscaling/ec2"
 
   providers = {
     aws = aws
@@ -110,7 +110,7 @@ module "ecs_cluster" {
   subnet_ids         = data.aws_subnet_ids.cluster.ids
   security_group_ids = concat(local.gss_security_group_ids, local.cluster_security_group_ids)
 
-  context = module.version_label.context
+  context = module.project_version_label.context
   tags = {
     (module.tag_keys.GENERAL.BUSINESS_SERVICE_COMPONENT) = module.tag_values.BUSINESS_SERVICE_COMPONENTS.EC2
   }

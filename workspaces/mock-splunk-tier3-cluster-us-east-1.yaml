@@ -1,6 +1,8 @@
 region: us-east-1
 account_id: 248634543775 #mock security operations
 
+system: splunk
+
 security_groups_config:
   - name: ngsc-splunk-tier3-ecs-cluster
     rules:
@@ -58,6 +60,7 @@ role_config:
               - ecs:StartTelemetrySession
               - ecs:Submit
               - ecs:StartTask
+              - ecs:SubmitTaskStateChange
               - ecr:GetAuthorizationToken
               - ecr:BatchCheckLayerAvailability
               - ecr:GetDownloadUrlForLayer
@@ -75,8 +78,3 @@ role_config:
           Action: sts:AssumeRole
           Principal:
             Service: ec2.amazonaws.com
-
-
-loadbalancer_config:
-  enabled: false
-  dns: null

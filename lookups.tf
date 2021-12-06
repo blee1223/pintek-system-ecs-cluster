@@ -24,7 +24,7 @@ data "aws_subnet_ids" "cluster" {
 
 data "aws_security_groups" "gss" {
   tags = {
-    (module.tag_keys.GENERAL.SYSTEM) = "gss"
+    (module.tag_keys.GENERAL.SYSTEM) = module.tag_values.SYSTEMS.GSS
   }
 
   filter {
@@ -50,7 +50,5 @@ locals {
     for sg in values(data.aws_security_group.gss) :
       sg.id
     if contains(local.sg_names, lookup(sg.tags, module.tag_keys.GENERAL.KEY, false)) == true
-  ]
-
-  
+  ]  
 }

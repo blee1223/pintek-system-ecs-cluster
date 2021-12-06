@@ -1,7 +1,7 @@
 
 
-module "version_label" {
-  source = "git@github.com:HHS/acf-ngsc-modules.git//label?ref=v0.1.0"
+module "project_version_label" {
+  source = "git@github.com:blee1223/acf-ngsc-modules.git//label"
 
   delimiter = "_"
 
@@ -12,9 +12,9 @@ module "version_label" {
 }
 
 module "asg_alarm_label" {
-  source = "git@github.com:HHS/acf-ngsc-modules.git//label?ref=v0.1.0"
+  source = "git@github.com:blee1223/acf-ngsc-modules.git//label"
 
-  context = module.version_label.context
+  context = module.project_version_label.context
 
   tags = {
     (module.tag_keys.GENERAL.BUSINESS_SERVICE_COMPONENT) = "alarm"
@@ -22,9 +22,9 @@ module "asg_alarm_label" {
 }
 
 module "target_group_label" {
-  source = "git@github.com:HHS/acf-ngsc-modules.git//label?ref=v0.1.0"
+  source = "git@github.com:blee1223/acf-ngsc-modules.git//label"
 
-  context = module.version_label.context
+  context = module.project_version_label.context
 
   tags = {
     (module.tag_keys.GENERAL.BUSINESS_SERVICE_COMPONENT) = "target_group"
