@@ -1,7 +1,7 @@
 
 
 module "project_version_label" {
-  source = "git@github.com:blee1223/acf-ngsc-modules.git//label"
+  source = "git@github.com:blee1223/pintek-modules.git//label"
 
   delimiter = "_"
 
@@ -12,7 +12,7 @@ module "project_version_label" {
 }
 
 module "asg_alarm_label" {
-  source = "git@github.com:blee1223/acf-ngsc-modules.git//label"
+  source = "git@github.com:blee1223/pintek-modules.git//label"
 
   context = module.project_version_label.context
 
@@ -22,7 +22,7 @@ module "asg_alarm_label" {
 }
 
 module "target_group_label" {
-  source = "git@github.com:blee1223/acf-ngsc-modules.git//label"
+  source = "git@github.com:blee1223/pintek-modules.git//label"
 
   context = module.project_version_label.context
 

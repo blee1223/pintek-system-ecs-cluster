@@ -1,18 +1,18 @@
 
 module "constants" {
-  source = "git@github.com:blee1223/acf-ngsc-modules.git//constants"
+  source = "git@github.com:blee1223/pintek-modules.git//constants"
 }
 
 module "tag_keys" {
-  source = "git@github.com:blee1223/acf-ngsc-modules.git//constants/tag_key"
+  source = "git@github.com:blee1223/pintek-modules.git//constants/tag_key"
 }
 
 module "tag_values" {
-  source = "git@github.com:blee1223/acf-ngsc-modules.git//constants/tag_value"
+  source = "git@github.com:blee1223/pintek-modules.git//constants/tag_value"
 }
 
 module "settings" {
-  source = "git@github.com:blee1223/acf-ngsc-modules.git//workspace_settings"
+  source = "git@github.com:blee1223/pintek-modules.git//workspace_settings"
 
   default_contents = file("${path.module}/default_config.yaml")
   workspace_contents = file("${path.module}/workspaces/${terraform.workspace}.yaml")
@@ -28,7 +28,7 @@ data "template_file" "user_data" {
 }
 
 module "security_groups" {
-  source = "git@github.com:blee1223/acf-ngsc-network-modules.git//vpc/security_group"
+  source = "git@github.com:blee1223/pintek-network-modules.git//vpc/security_group"
 
   for_each = { for config in module.settings.self.security_groups_config : config.name => config }
 
@@ -44,7 +44,7 @@ module "security_groups" {
 }
 
 module "iam_role" {
-  source = "git@github.com:blee1223/acf-ngsc-modules.git//iam_role"
+  source = "git@github.com:blee1223/pintek-modules.git//iam_role"
 
   providers = {
     aws = aws.enterprise_architect
@@ -88,7 +88,7 @@ resource "aws_alb_target_group" "cluster_tg" {
 }
 
 module "ecs_cluster" {
-  source = "git@github.com:blee1223/acf-ngsc-system-modules.git//autoscaling/ec2"
+  source = "git@github.com:blee1223/pintek-system-modules.git//autoscaling/ec2"
 
   providers = {
     aws = aws
